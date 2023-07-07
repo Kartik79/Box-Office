@@ -1,43 +1,45 @@
-import { useState } from "react"
-import { searchforshow } from "../api/tvmaze"
+import { useState } from 'react';
+import { searchforshow } from '../api/tvmaze';
+import { searchforpeople } from '../api/tvmaze';
+import SearchForm from '../Components/SeachForm';
 
-const Home =()=> {
-    const [searchstr,setsearchstr]=useState("")
-    const [apiData,setapiData]=useState(null)
-    const [apiDataerror,setapiDataerror]=useState(null)
+const Home = () => {
+  const [apiData, setapiData] = useState(null);
+  const [apiDataerror, setapiDataerror] = useState(null);
 
-    const onSearchinputchange=(ev)=>{
-        setsearchstr(ev.target.value)
+  
+  
+  const onSearch = async ({q,searchoption}) => {
+    try {
+      setapiDataerror(null);
+      let result
+      if(searchoption==='shows') {
+        result = await searchforshow(q);
+      } else{
+        result = await searchforpeople(q);
+      }
+      setapiData(result);
+    } catch (Error) {
+      setapiDataerror(Error);
     }
-    const onSearch= async(ev)=>{
-        ev.preventDefault()
-        try {
-            setapiDataerror(null)
-            const result=await searchforshow(searchstr)
-            setapiData(result)       
-        }catch(Error) {
-            setapiDataerror(Error)
-        }
+  };
+  const renderapi = () => {
+    if (apiDataerror) {
+      return <div>Error occured: {apiDataerror.message}</div>;
     }
-    const renderapi=()=>{
-        if(apiDataerror) {
-            return <div>Error occured: {apiDataerror.message}</div>
-        }
-        if(apiData) {
-            return (apiData.map((data)=>(
-                <div key={data.show.id}>{data.show.name}</div>
-            )))
-        }
-        return null
+    if (apiData) {
+      return apiData[0].show ? apiData.map(data => (
+        <div key={data.show.id}>{data.show.name}</div>
+      )):apiData.map(data => (
+        <div key={data.person.id}>{data.person.name}</div>
+      ));
     }
-    return <div>
-        <form onSubmit={onSearch}>
-        <input type="text" value={searchstr} onChange={onSearchinputchange}/>
-        <button type="submit">Search</button>
-        </form>
-        <div>
-            {renderapi()}
-        </div>
+    return null;
+  };
+  return ( <div>
+    <SearchForm onSearch={onSearch}/>
+    <div>{renderapi()}</div>
     </div>
-}
-export default Home
+  );
+};
+export default Home;
