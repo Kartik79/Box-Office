@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Starred from './pages/Starred';
-import MainLayout from './Components/MainLaayout';
+import MainLayout from './Components/MainLayout';
 function App() {
   return (
     <BrowserRouter>
