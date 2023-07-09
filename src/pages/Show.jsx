@@ -24,7 +24,7 @@ import { useQuery } from '@tanstack/react-query'
 const Show=()=>{
     const {showId}=useParams()
     // const {showdata,showerror} = useShowById(showId)
-    const {data:showdata,error:showerror}=useQuery({queryKey:['show',showId], queryFn:()=>getShowbyId(showId)})
+    const {data:showdata,error:showerror}=useQuery({queryKey:['shows',showId], queryFn:()=>getShowbyId(showId)})
     if(showerror) {
         return <div>We have an error : {showerror.message}</div>
     }
