@@ -6,34 +6,20 @@ import ShowMainData from "../Components/shows/ShowMainData";
 import Details from "../Components/shows/Details";
 import Seasons from "../Components/shows/Seasons";
 import Cast from "../Components/shows/Cast";
-
-// const useShowById=(showId)=> {
-//     const {showdata,setshowdata} = useState(null)
-//     const {showerror, setshowerror} = useState(null)
-
-//     useEffect(()=>{
-//         async function FetchData() {
-//             try {
-//                 const data=await getShowbyId(showId)
-//                 setshowdata(data)
-//             } catch(err) {
-//                 setshowerror(err)
-//             }
-//         }
-//         FetchData()
-//     },[showId])
-//     return {showdata,showerror}
-// }
+import {Link} from "react-router-dom"
 
 const Show=()=>{
     const {showId}=useParams()
-    // const {showdata,showerror} = useShowById(showId)
+
     const {data:showdata,error:showerror}=useQuery({queryKey:['shows',showId], queryFn:()=>getShowbyId(showId)})
     if(showerror) {
         return <div>We have an error : {showerror.message}</div>
     }
     if(showdata) {
         return <div>
+
+        <Link to="/">Go Back to Home</Link>
+
             <ShowMainData 
                 image={showdata.image} 
                 name={showdata.name} 
