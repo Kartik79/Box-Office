@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
-import { getShowbyId } from "../api/tvmaze";
+import { getShowbyIds } from "../api/tvmaze";
 import { useQuery } from '@tanstack/react-query'
 import ShowMainData from "../Components/shows/ShowMainData";
 import Details from "../Components/shows/Details";
@@ -11,7 +11,7 @@ import {Link} from "react-router-dom"
 const Show=()=>{
     const {showId}=useParams()
 
-    const {data:showdata,error:showerror}=useQuery({queryKey:['shows',showId], queryFn:()=>getShowbyId(showId)})
+    const {data:showdata,error:showerror}=useQuery({queryKey:['shows',showId], queryFn:()=>getShowbyIds(showId), refetchOnWindowFocus:false})
     if(showerror) {
         return <div>We have an error : {showerror.message}</div>
     }
