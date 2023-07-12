@@ -1,6 +1,7 @@
+import { SearchCard } from "../common/SearchCard"
 
 const ActorCard=({country,name,image,birthday,deathday,gender})=>{
-    return <div>
+    return <SearchCard>
         <img src={image} />
         <h1>{name} {!!gender && `(${gender})`}</h1>
 
@@ -8,6 +9,6 @@ const ActorCard=({country,name,image,birthday,deathday,gender})=>{
 
         {!!birthday && <p>Born {birthday}</p>}
         <p>{deathday?`Died: ${deathday}`:'Alive'}</p>
-        </div>
+        </SearchCard>
 }
 export default ActorCard

@@ -1,26 +1,34 @@
-import ShowGrid from "../Components/shows/ShowGrid";
-import { getShowbyIds } from "../api/tvmaze";
-import { useStarredShows } from "../lib/useStarredShows";
-import { useQuery } from '@tanstack/react-query'
-
+import { useQuery } from '@tanstack/react-query';
+import { getShowbyIds } from '../api/tvmaze';
+import { useStarredShows } from '../lib/useStarredShows';
+import ShowGrid from '../Components/shows/ShowGrid';
+import { TextCenter } from '../Components/common/TextCenter';
 
 const Starred = () => {
-  const  [starredShowsIds] =useStarredShows()
-  const {data:starredshows,error:starredshowserror} = useQuery(
-    {queryKey : ['starred', starredShowsIds],
-    queryFn:async ()=>getShowbyIds(starredShowsIds).then(result=>result.map(show=>({show}))),
-    refetchOnWindowFocus:false})
+  const [starredShowsIds] = useStarredShows();
 
-  if(starredshows?.length==0) {
-    return <div>No Starred Shows</div>
-  } 
-  if(starredshows?.length>0) {
-    return <ShowGrid shows={starredshows}/>
-  } 
-  if(starredshowserror) {
-    return <div>Error occured: {starredshowserror.message}</div>
+  const { data: starredShows, error: starredShowsError } = useQuery({
+    queryKey: ['starred', starredShowsIds],
+    queryFn: () =>
+      getShowbyIds(starredShowsIds).then(result =>
+        result.map(show => ({ show }))
+      ),
+    refetchOnWindowFocus: false,
+  });
+
+  if (starredShows?.length === 0) {
+    return <TextCenter>No shows were starred</TextCenter>;
   }
 
-  return <div>Shows are loading</div>
+  if (starredShows?.length > 0) {
+    return <ShowGrid shows={starredShows} />;
+  }
+
+  if (starredShowsError) {
+    return <TextCenter>Error occured: {starredShowsError.message}</TextCenter>;
+  }
+
+  return <TextCenter>Shows are loading</TextCenter>;
 };
+
 export default Starred;
